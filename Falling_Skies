@@ -1,0 +1,117 @@
+import turtle
+import random
+
+# windows Setup
+window = turtle.Screen()
+window.title("Falling Skies")
+window.bgcolor("white")
+window.setup(width=800, height=600)
+# window.tracer(0)
+
+# add the player
+player = turtle.Turtle()
+player.penup()
+player.speed(0)
+player.shape("square")
+player.color("blue")
+player.goto(0, -250)
+# player.direction = "left"
+player.direction = "stop"
+
+# list of good guys
+good_guys = []
+
+# add the good_guys
+
+for _ in range(10):
+    good_guy = turtle.Turtle()
+    good_guy.penup()
+    good_guy.speed(0)
+    good_guy.shape("circle")
+    good_guy.color("green")
+    good_guy.goto(-100, 250)
+    good_guy.speed = random.randint(1, 5)
+    good_guys.append(good_guy)
+
+# list of bad guys
+bad_guys = []
+
+# add the good_guys
+
+for _ in range(10):
+    bad_guy = turtle.Turtle()
+    bad_guy.penup()
+    bad_guy.speed(0)
+    bad_guy.shape("circle")
+    bad_guy.color("red")
+    bad_guy.goto(100, 250)
+    bad_guy.speed = random.randint(2, 5)
+    bad_guys.append(bad_guy)
+
+
+# Functions
+def go_left():
+    player.direction = "left"
+
+
+def go_right():
+    player.direction = "right"
+
+
+# Keyboard Binding
+window.listen()
+window.onkeypress(go_left, "Left")
+window.onkeypress(go_right, "Right")
+# Main game loop
+
+while True:
+    # update screen
+    window.update()
+
+    # movement of player
+    if player.direction == "left":
+        x = player.xcor()
+        x -= 3
+        player.setx(x)
+    if player.direction == "right":
+        x = player.xcor()
+        x += 3
+        player.setx(x)
+
+    # movement of good_guys
+    for good_guy in good_guys:
+
+        y = good_guy.ycor()
+        y -= good_guy.speed
+        good_guy.sety(y)
+        # good_guy.sety(good_guy.ycor()-=3)
+        if good_guy.ycor() < -300:
+            x = random.randint(-380, 380)
+            y = random.randint(300, 400)
+            good_guy.goto(x, y)
+
+        # check for a collision with the player
+        if good_guy.distance(player) < 20:
+            x = random.randint(-380, 380)
+            y = random.randint(300, 400)
+            good_guy.goto(x, y)
+
+    # movement of bad_guys
+    for bad_guy in bad_guys:
+
+        y = bad_guy.ycor()
+        y -= bad_guy.speed
+        bad_guy.sety(y)
+        # good_guy.sety(good_guy.ycor()-=3)
+        if bad_guy.ycor() < -300:
+            x = random.randint(-380, 380)
+            y = random.randint(300, 400)
+            bad_guy.goto(x, y)
+
+        # check for a collision with the player
+        if bad_guy.distance(player) < 20:
+            x = random.randint(-380, 380)
+            y = random.randint(300, 400)
+            bad_guy.goto(x, y)
+
+window.mainloop()
